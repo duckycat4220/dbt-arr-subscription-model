@@ -184,14 +184,21 @@ arr_chart_improved.png
 The visualization helps identify key revenue changes across the subscription lifecycle.
 
 # Running the Project
-1. Install Dependencies
-pip install dbt-core dbt-snowflake
-2. Configure Snowflake Connection
+Follow the steps below to reproduce the project.
 
-Create a profiles.yml file:
+1. Install dependencies
 
+Install the required Python packages:
+```
+pip install -r requirements.txt
+```
+
+2. Configure Snowflake connection
+
+Create the dbt profile configuration file:
+```
 ~/.dbt/profiles.yml
-
+```
 Example configuration:
 ```
 arr_project:
@@ -208,26 +215,44 @@ arr_project:
       schema: <schema>
       threads: 4
 ```
+3. Install dbt packages
 
-3. Install dbt Packages
+Install dbt package dependencies (e.g., dbt-utils):
+```
+cd arr_project
 dbt deps
-4. Load Seed Data
+```
+4. Load seed data
+
+Load the raw subscription dataset into Snowflake:
+```
 dbt seed
+```
+This step ingests the provided subscription dataset as the raw input for the transformation pipeline.
 
-This loads the raw subscription dataset into Snowflake.
+5. Build the project
 
-5. Build the Project
+Run the full dbt pipeline:
+```
 dbt build
-
+```
 This command will:
 
 load seed data
 
-run dbt models
+execute all dbt models
 
-execute tests
+run data quality tests
 
-materialize final datasets
+materialize the final ARR analytical dataset
+
+6. Generate the ARR visualization
+
+From the repository root:
+```
+python arr_chart.py
+```
+This script generates a visualization illustrating the evolution of Annual Recurring Revenue (ARR) over time.
 
 # Generating Documentation
 
