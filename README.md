@@ -1,5 +1,3 @@
-# dbt-arr-subscription-model
-
 # Subscription Revenue Modeling with dbt & Snowflake
 
 This project models Annual Recurring Revenue (ARR) for a subscription-based business using dbt for data transformation and Snowflake as the data warehouse.
