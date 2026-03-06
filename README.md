@@ -52,22 +52,27 @@ The final output is an analytics-ready dataset that captures revenue evolution a
 The pipeline transforms raw subscription data into a structured ARR analytics dataset.
 
 Raw Seed Data
+
       │
       ▼
 Staging Layer
 (cleaning & normalization)
+
       │
       ▼
 Date Spine Generation
 (month timeline)
+
       │
       ▼
 Subscription Expansion
 (monthly subscription activity)
+
       │
       ▼
 ARR Aggregation
 (account-level revenue)
+
       │
       ▼
 ARR Change Classification
@@ -244,6 +249,7 @@ data tests
 dependency graph
 
 # Repository Structure
+
 dbt-challenge
 │
 ├── arr_project
@@ -252,6 +258,7 @@ dbt-challenge
 │   ├── models
 │   │   ├── staging
 │   │   │   └── stg_subscriptions.sql
+│   │   │
 │   │   ├── date_spine.sql
 │   │   ├── subscription_months.sql
 │   │   ├── monthly_arr.sql
@@ -262,7 +269,9 @@ dbt-challenge
 │   │
 │   ├── snapshots
 │   ├── tests
-│   └── dbt_project.yml
+│   ├── dbt_project.yml
+│   ├── packages.yml
+│   └── package-lock.yml
 │
 ├── arr_chart.py
 ├── arr_data.csv
