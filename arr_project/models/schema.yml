@@ -1,0 +1,95 @@
+version: 2
+
+seeds:
+  - name: subscriptions
+    description: "Raw subscription dataset provided for the ARR modeling challenge."
+    columns:
+      - name: subscription_id
+        description: "Unique identifier for each subscription."
+      - name: account_id
+        description: "Account identifier associated with the subscription."
+      - name: subscription_start_date
+        description: "Date when the subscription began."
+      - name: subscription_end_date
+        description: "Date when the subscription ended."
+      - name: subscription_arr_usd
+        description: "Annual recurring revenue value for the subscription."
+
+models:
+  - name: stg_subscriptions
+    description: "Staged subscriptions from the seed; casts types for downstream models."
+    columns:
+      - name: subscription_id
+        description: "Unique identifier for a subscription."
+        tests:
+          - not_null
+          - unique
+
+      - name: subscription_start_date
+        description: "Subscription start date."
+        tests:
+          - not_null
+
+      - name: subscription_end_date
+        description: "Subscription end date."
+        tests:
+          - not_null
+
+      - name: subscription_arr_usd
+        description: "Annual recurring revenue (USD) for the subscription."
+        tests:
+          - not_null
+
+  - name: date_spine
+    description: "Monthly date spine used to generate a continuous series of months for subscription revenue modeling."
+    columns:
+      - name: date_month
+        description: "First day of the month representing the month bucket."
+
+  - name: monthly_arr
+    description: "Intermediate model expanding subscriptions across months to represent ARR activity over time."
+    columns:
+      - name: subscription_id
+        description: "Unique identifier of the subscription."
+      - name: date_month
+        description: "Month bucket used for time series expansion."
+      - name: month_end
+        description: "Last day of the month used to determine whether a subscription is active."
+      - name: mrr_usd
+        description: "Monthly recurring revenue derived from annual subscription ARR."
+  
+  - name: subscription_months
+    description: "One row per subscription per month, including churn month; contains MRR for classification."
+    columns:
+      - name: subscription_id
+        description: "Subscription identifier."
+        tests:
+          - not_null
+      - name: date_month
+        description: "Month bucket (first day of month)."
+        tests:
+          - not_null
+      - name: mrr_usd
+        description: "Monthly recurring revenue (USD)."
+        tests:
+          - not_null
+
+  - name: arr_change_classification
+    description: "ARR change category per subscription-month based on MRR movement."
+    columns:
+      - name: subscription_id
+        description: "Subscription identifier."
+        tests:
+          - not_null
+      - name: date_month
+        description: "Month bucket (first day of month)."
+        tests:
+          - not_null
+      - name: arr_change_category
+        description: "Change category (new/no_change/expansion/contraction/churn/reactivation)."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['new', 'no_change', 'expansion', 'contraction', 'churn', 'reactivation']
+                quote: true
