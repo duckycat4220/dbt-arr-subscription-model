@@ -50,33 +50,29 @@ The final output is an analytics-ready dataset that captures revenue evolution a
 # Data Pipeline Architecture
 
 The pipeline transforms raw subscription data into a structured ARR analytics dataset.
-
+```
 Raw Seed Data
-
       │
       ▼
 Staging Layer
 (cleaning & normalization)
-
       │
       ▼
 Date Spine Generation
 (month timeline)
-
       │
       ▼
 Subscription Expansion
 (monthly subscription activity)
-
       │
       ▼
 ARR Aggregation
 (account-level revenue)
-
       │
       ▼
 ARR Change Classification
 (revenue lifecycle events)
+```
 
 # dbt Model Layers
 1. Staging Layer
@@ -197,7 +193,7 @@ Create a profiles.yml file:
 ~/.dbt/profiles.yml
 
 Example configuration:
-
+```
 arr_project:
   target: dev
   outputs:
@@ -211,6 +207,8 @@ arr_project:
       warehouse: <warehouse>
       schema: <schema>
       threads: 4
+```
+
 3. Install dbt Packages
 dbt deps
 4. Load Seed Data
@@ -248,8 +246,9 @@ data tests
 
 dependency graph
 
-# Repository Structure
+## Repository Structure
 
+```
 dbt-challenge
 │
 ├── arr_project
@@ -273,8 +272,11 @@ dbt-challenge
 │   ├── packages.yml
 │   └── package-lock.yml
 │
-├── arr_chart.py
-├── arr_data.csv
-├── arr_chart.png
-├── arr_chart_improved.png
+├── analysis
+│   ├── arr_chart.py
+│   ├── arr_data.csv
+│   ├── arr_chart.png
+│   └── arr_chart_improved.png
+│
 └── README.md
+```
